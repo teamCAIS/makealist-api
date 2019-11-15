@@ -4,14 +4,7 @@ from controllers import user
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 
-""" @app.route('/')
-def root_route():
-  return jsonify({
-    'root': 'test2'
-  }) """
-
-  #request.args.get('language') or request.args['language']
-
+#request.args.get('language') or request.args['language']
 
 @app.route('/user/<int:id>')
 def get_user(id=None):
@@ -26,3 +19,8 @@ def register():
 def login():
   req_data = request.get_json()
   return user.login(req_data)
+
+@app.route('/user/edit/', methods=['PUT'])
+def edit_user():
+  req_data = request.get_json()
+  return user.update(req_data)

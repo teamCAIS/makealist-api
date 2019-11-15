@@ -42,3 +42,35 @@ def login(data):
   return jsonify({
       'message':'A senha está incorreta'
     })
+
+def update(data):
+  sets = []
+  try:
+    sets.append(f"name = '{data['name']}'")
+  except:
+    print('There is no name')
+  try:
+    if email_exists(data['email']):
+      return jsonify({
+        'message':'O e-mail informado já está cadastrado no sistema'
+      })
+    sets.append(f"email = '{data['email']}'")
+  except:
+    print('There is no email')
+  try:
+    password = pbkdf2_sha256.hash(data['password'])
+    sets.append(f"password = '{password}'")
+  except:
+    print('There is no password')
+  
+  if len(sets) == 0:
+    return jsonify({
+        'message':'Nenhum campo foi alterado'
+      })
+  
+  sets = ', '.join(sets)
+  queryString = f"update public.user set {sets} where id={data['id']} returning id"
+  print(queryString)
+  result = query.raw(queryString, False)
+  return get(result['id'])
+  
