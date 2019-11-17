@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from controllers import user
+from controllers import user, list
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
@@ -24,3 +24,9 @@ def login():
 def edit_user():
   req_data = request.get_json()
   return user.update(req_data)
+
+@app.route('/list/', methods=['GET','POST','PUT','DELETE'])
+def handle_list():
+  if request.method == 'GET':
+    return list.get()
+  return jsonify(request.method)
