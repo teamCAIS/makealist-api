@@ -45,3 +45,13 @@ def create(data):
       VALUES ({id_list}, '{item['text']}') returning id'''
       result = query.raw(queryString, False)
     return jsonify('success creating list')
+
+def delete(id):
+  try:
+    queryString = f"delete from public.item where id_list={id} returning id"
+    result = query.raw(queryString, True)
+    queryString = f"delete from public.list where id={id} returning id"
+    result = query.raw(queryString, False)
+    return jsonify("Lista excluída com sucesso")
+  except:
+    return jsonify("Não foi possível excluir a lista")

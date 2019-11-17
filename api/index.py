@@ -30,5 +30,7 @@ def handle_list():
   if request.method == 'GET':
     return list.get()
   req_data = request.get_json()
+  if request.method == 'DELETE':
+    return list.delete(req_data['id'])
   if request.method == 'POST':
     return list.create(req_data)
