@@ -29,4 +29,6 @@ def edit_user():
 def handle_list():
   if request.method == 'GET':
     return list.get()
-  return jsonify(request.method)
+  req_data = request.get_json()
+  if request.method == 'POST':
+    return list.create(req_data)

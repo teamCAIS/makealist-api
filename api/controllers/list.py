@@ -19,4 +19,29 @@ def get():
   return jsonify(list(result))
 
 def create(data):
-  return jsonify(request.method)
+  id_user = data['id_user']
+  title = data['title']
+  private = data['private']
+  ordered = data['ordered']
+  queryString = f'''INSERT INTO public.list(
+	id_user, title, private, ordered)
+	VALUES ({id_user}, '{title}', {private}, {ordered}) returning id'''
+  result = query.raw(queryString, False)
+  id_list = result['id']
+  items = data['items']
+  if ordered:
+    for item in items:
+      queryString = f'''INSERT INTO public.item(
+      id_list, item_order, text)
+      VALUES ({id_list}, {item['item_order']}, '{item['text']}') returning id'''
+      print(queryString)
+      result = query.raw(queryString, False)
+      
+    return jsonify('success creating ordered list')
+  else:
+    for item in items:
+      queryString = f'''INSERT INTO public.item(
+      id_list, text)
+      VALUES ({id_list}, '{item['text']}') returning id'''
+      result = query.raw(queryString, False)
+    return jsonify('success creating list')
