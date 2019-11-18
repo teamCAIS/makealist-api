@@ -46,3 +46,11 @@ def like():
 @app.route('/deslike/', methods=['POST'])
 def deslike():
   return list.like.delete(request.get_json())
+
+@app.route('/comment/', methods=['POST', 'DELETE'])
+def handle_comment():
+  req_data = request.get_json()
+  if request.method == 'DELETE':
+    return list.comment.delete(req_data['id'])
+  if request.method == 'POST':
+    return list.comment.create(req_data)
