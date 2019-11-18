@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from controllers import user, list
+from controllers import user, list, like
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
@@ -27,10 +27,22 @@ def edit_user():
 
 @app.route('/list/', methods=['GET','POST','PUT','DELETE'])
 def handle_list():
-  if request.method == 'GET':
-    return list.get()
   req_data = request.get_json()
+  if request.method == 'GET':
+    return list.get(req_data['id_user'])
   if request.method == 'DELETE':
     return list.delete(req_data['id'])
   if request.method == 'POST':
     return list.create(req_data)
+
+@app.route('/likes/<int:id_list>')
+def get_likes_from_list(id_list):
+  return list.like.get_likes(id_list)
+
+@app.route('/like/', methods=['POST'])
+def like():
+  return list.like.create(request.get_json())
+
+@app.route('/deslike/', methods=['POST'])
+def deslike():
+  return list.like.delete(request.get_json())

@@ -1,7 +1,9 @@
 import query
 from flask import request, jsonify
+from controllers import like
 
-def put_items(list):
+def put_items(list, id_viewer):
+  print(id_viewer)
   id_user = list['id_user']
   list['user'] = query.raw(f"select id, name, email, photo from public.user where id={id_user}", False)
   list['items'] = []
@@ -10,12 +12,19 @@ def put_items(list):
   items = query.raw(queryString, True)
   for item in items:
     list['items'].append(item)
+  queryString = f'select * from public.like where id_list={id_list} and id_user={id_viewer}'
+  liked = query.raw(queryString, False)
+  if liked == None:
+    liked = False
+  else:
+    liked = True
+  list['liked'] = liked
   return list
 
-def get():
-  queryString = "select * from public.list"
+def get(id_viewer):
+  queryString = "select * from public.list where private=false"
   lists = query.raw(queryString, True)
-  result = map(put_items,lists)
+  result = map(lambda list: put_items(list, id_viewer) ,lists)
   return jsonify(list(result))
 
 def create(data):
@@ -50,8 +59,11 @@ def delete(id):
   try:
     queryString = f"delete from public.item where id_list={id} returning id"
     result = query.raw(queryString, True)
+    result = like.delete_from_list(id)
     queryString = f"delete from public.list where id={id} returning id"
     result = query.raw(queryString, False)
+    
     return jsonify("Lista excluída com sucesso")
-  except:
+  except Exception as e:
+    print(e)
     return jsonify("Não foi possível excluir a lista")
