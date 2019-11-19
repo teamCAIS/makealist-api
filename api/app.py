@@ -6,6 +6,10 @@ app.config["JSON_SORT_KEYS"] = False
 
 #request.args.get('language') or request.args['language']
 
+@app.route('/')
+def test():
+  return jsonify('Test index page')
+
 @app.route('/user/<int:id>')
 def get_user(id=None):
   return user.get(id)
