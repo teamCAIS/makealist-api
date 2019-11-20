@@ -28,6 +28,8 @@ def put_items(list, id_viewer):
 def get(id_viewer):
   queryString = "select * from public.list where private=false"
   lists = query.raw(queryString, True)
+  if lists == None:
+    return jsonify([])
   result = map(lambda list: put_items(list, id_viewer) ,lists)
   return jsonify(list(result))
 

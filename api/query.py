@@ -5,6 +5,7 @@ import os
 DATABASE_URL = os.environ['DATABASE_URL']
 
 def raw(query, many):
+    print(query)
     try:
         """ connection = psycopg2.connect(
             user=os.environ.get('DB_USER'),
