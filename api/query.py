@@ -2,14 +2,20 @@ import psycopg2, traceback
 from psycopg2.extras import RealDictCursor
 import os
 
+DATABASE_URL = os.environ['DATABASE_URL']
+
 def raw(query, many):
     try:
-        connection = psycopg2.connect(
+        """ connection = psycopg2.connect(
             user=os.environ.get('DB_USER'),
             password=os.environ.get('DB_PASSWORD'),
             host="127.0.0.1",
             port="5432",
             database="makealist",
+        ) """
+        connection = psycopg2.connect(
+            DATABASE_URL,
+            sslmode='require'
         )
         curr = connection.cursor(cursor_factory=RealDictCursor)
         curr.execute(query)
