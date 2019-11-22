@@ -25,7 +25,15 @@ def put_items(list, id_viewer):
   list['comments'] = comment.get(id_list)
   return list
 
-def get(id_viewer):
+def get(id_user):
+  queryString = f"select * from public.list where id_user={id_user}"
+  lists = query.raw(queryString, True)
+  if lists == None:
+    return jsonify([])
+  result = map(lambda list: put_items(list, id_user) ,lists)
+  return jsonify(list(result))
+
+def feed(id_viewer):
   queryString = "select * from public.list where private=false"
   lists = query.raw(queryString, True)
   if lists == None:

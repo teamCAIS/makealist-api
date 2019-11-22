@@ -39,6 +39,10 @@ def handle_list():
   if request.method == 'POST':
     return list.create(req_data)
 
+@app.route('/feed/')
+def get_feed():
+  return list.feed(request.args.get('user'))
+
 @app.route('/likes/<int:id_list>')
 def get_likes_from_list(id_list):
   return list.like.get_likes(id_list)
