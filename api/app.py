@@ -33,7 +33,7 @@ def edit_user():
 def handle_list():
   req_data = request.get_json()
   if request.method == 'GET':
-    return list.get(req_data['id_user'])
+    return list.get(request.args.get('user'))
   if request.method == 'DELETE':
     return list.delete(req_data['id'])
   if request.method == 'POST':
