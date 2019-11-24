@@ -49,14 +49,18 @@ def update(data):
     sets.append(f"name = '{data['name']}'")
   except:
     print('There is no name')
-  try:
+  """  try:
     if email_exists(data['email']):
       return jsonify({
         'message':'O e-mail informado já está cadastrado no sistema'
       })
     sets.append(f"email = '{data['email']}'")
   except:
-    print('There is no email')
+    print('There is no email') """
+  try:
+    sets.append(f"bio = '{data['bio']}'")
+  except:
+    print('There is no bio')
   try:
     password = pbkdf2_sha256.hash(data['password'])
     sets.append(f"password = '{password}'")

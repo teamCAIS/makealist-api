@@ -31,9 +31,9 @@ def edit_user():
 
 @app.route('/list/', methods=['GET','POST','PUT','DELETE'])
 def handle_list():
-  req_data = request.get_json()
   if request.method == 'GET':
     return list.get(request.args.get('user'))
+  req_data = request.get_json()
   if request.method == 'DELETE':
     return list.delete(req_data['id'])
   if request.method == 'POST':

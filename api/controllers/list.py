@@ -26,7 +26,7 @@ def put_items(list, id_viewer):
   return list
 
 def get(id_user):
-  queryString = f"select * from public.list where id_user={id_user}"
+  queryString = f"select * from public.list where id_user={id_user} order by id desc"
   lists = query.raw(queryString, True)
   if lists == None:
     return jsonify([])
@@ -34,7 +34,7 @@ def get(id_user):
   return jsonify(list(result))
 
 def feed(id_viewer):
-  queryString = "select * from public.list where private=false"
+  queryString = "select * from public.list where private=false order by id desc"
   lists = query.raw(queryString, True)
   if lists == None:
     return jsonify([])

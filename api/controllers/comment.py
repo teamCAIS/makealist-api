@@ -8,7 +8,7 @@ def put_user(comment):
   return comment
 
 def get(id_list):
-  queryString = f"select id, comment_text, id_user, comment_date from public.comment where id_list={id_list}"
+  queryString = f"select id, comment_text, id_user, comment_date from public.comment where id_list={id_list} order by id desc"
   comments = query.raw(queryString, True)
   if comments == None:
     return []
