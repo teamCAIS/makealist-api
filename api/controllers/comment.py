@@ -24,7 +24,7 @@ def create(data):
     id_user, id_list, comment_text)
     VALUES ({id_user}, {id_list}, '{comment_text}') returning id'''
     result = query.raw(queryString, False)
-    return jsonify('Comentário adicionado')
+    return jsonify(result)
   except Exception as e:
     print(e)
     return jsonify('Não foi possível salvar seu comentário')
